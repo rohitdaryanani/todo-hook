@@ -1,29 +1,49 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { uuid } from 'uuidv4';
 
-function Todos({ todos, deleteTodo, toggleEdit }) {
-  return todos.map(todo => {
-    return (
-      <li key={todo.id}>
-        {todo.editable ? (
-          <span>
-            <input
-              type="text"
-              value={todo.name}
-              onChange={e => e.target.value}
-            />
-            <button onClick={() => toggleEdit(todo.id)}>{"save"}</button>
-            <button onClick={() => deleteTodo(todo.id)}>cancel</button>
-          </span>
-        ) : (
-          <span>
-            {todo.name}
-            <button onClick={() => toggleEdit(todo.id)}>{"edit"}</button>
-            <button onClick={() => deleteTodo(todo.id)}>delete</button>
-          </span>
-        )}
-      </li>
-    );
-  });
-}
+const Todos = () => {
+  const [todos, setTodo] = useState([]);
 
-export { Todos };
+  // const handleSubmit = event => {
+  //   event.preventDefault();
+  //   const { target } = event;
+  //   const { task } = target;
+  //   const { value } = task;
+  //   if (value.trim() === '') return;
+
+  //   const todo = {
+  //     id: uuid(),
+  //     name: value,
+  //     completed: false,
+  //     editable: false
+  //   };
+  //   setTodo([...todos, todo]);
+  //   task.value = '';
+  //   task.focus();
+  // };
+
+  // // const handleDelete = id => {
+  // //   const updatedTodos = todos.filter(todo => todo.id !== id);
+  // //   setTodo(updatedTodos);
+  // // };
+
+  // // const toggleEdit = id => {
+  // //   const updatedTodos = todos.map(todo => {
+  // //     if (todo.id === id) {
+  // //       todo.editable = !todo.editable;
+  // //       return todo;
+  // //     }
+  // //     return todo;
+  // //   });
+  // //   console.log(updatedTodos);
+  // //   setTodo(updatedTodos);
+  // // };
+
+  return (
+    <div>
+      <p>test</p>
+    </div>
+  );
+};
+
+export default Todos;
