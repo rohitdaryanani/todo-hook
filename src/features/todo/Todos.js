@@ -1,47 +1,64 @@
 import React, { useState } from 'react';
 import { uuid } from 'uuidv4';
+import Todo from './Todo';
 
 const Todos = () => {
   const [todos, setTodo] = useState([]);
 
-  // const handleSubmit = event => {
-  //   event.preventDefault();
-  //   const { target } = event;
-  //   const { task } = target;
-  //   const { value } = task;
-  //   if (value.trim() === '') return;
+  const handleSubmit = event => {
+    event.preventDefault();
+    const { target } = event;
+    const { task } = target;
+    const { value } = task;
+    if (value.trim() === '') return;
 
-  //   const todo = {
-  //     id: uuid(),
-  //     name: value,
-  //     completed: false,
-  //     editable: false
-  //   };
-  //   setTodo([...todos, todo]);
-  //   task.value = '';
-  //   task.focus();
-  // };
+    const todo = {
+      id: uuid(),
+      name: value,
+      completed: false
+    };
+    setTodo([...todos, todo]);
+    task.value = '';
+    task.focus();
+  };
 
-  // // const handleDelete = id => {
-  // //   const updatedTodos = todos.filter(todo => todo.id !== id);
-  // //   setTodo(updatedTodos);
-  // // };
+  const updateTodoHandler = (index, newTodo) => {
+    const todosCopy = [...todos];
+    /**
+     * instead of doing 
+     *  const todo = todosCopy[index];
+        todo.name = newTodo.name;
+        todo.completed = newTodo.completed;
+        we remove the todo at specific index and replace with newTodo
+     */
+    todosCopy.splice(index, 1, newTodo);
+    setTodo(todosCopy);
+  };
 
-  // // const toggleEdit = id => {
-  // //   const updatedTodos = todos.map(todo => {
-  // //     if (todo.id === id) {
-  // //       todo.editable = !todo.editable;
-  // //       return todo;
-  // //     }
-  // //     return todo;
-  // //   });
-  // //   console.log(updatedTodos);
-  // //   setTodo(updatedTodos);
-  // // };
+  const deleteTodoHandler = index => {
+    const todosCopy = [...todos];
+    todosCopy.splice(index, 1);
+    setTodo(todosCopy);
+  };
 
   return (
     <div>
-      <p>test</p>
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="task" />
+        <input type="submit" value="Submit" />
+      </form>
+      <ul>
+        {todos.map((todo, index) => (
+          <li key={todo.id}>
+            <Todo
+              todo={todo}
+              index={index}
+              updateTodoHandler={updateTodoHandler}
+              deleteTodoHandler={deleteTodoHandler}
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
