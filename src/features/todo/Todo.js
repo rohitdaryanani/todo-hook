@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 const Todo = ({
   index,
   todo,
-  completedTaskCount,
-  updateCompletedTaskCountHandler,
   updateTodoHandler,
   deleteTodoHandler
 }) => {
@@ -29,13 +27,8 @@ const Todo = ({
 
   const toggleCompleted = event => {
     const { target } = event;
-    const { checked } = target;
-    const completedValue = checked
-      ? completedTaskCount + 1
-      : completedTaskCount - 1;
-
+    const { checked } = target;      
     updateTodoHandler(index, { ...todo, completed: checked });
-    updateCompletedTaskCountHandler(completedValue);
   };
 
   const { name } = todo;

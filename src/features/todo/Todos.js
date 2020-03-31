@@ -6,17 +6,10 @@ const Todos = () => {
   const [todos, setTodo] = useState(
     JSON.parse(window.localStorage.getItem('todos')) || []
   );
-  const [completedTaskCount, setCompletedTaskCount] = useState(
-    Number(window.localStorage.getItem('completedTaskCount')) || 0
-  );
 
   useEffect(() => window.localStorage.setItem('todos', JSON.stringify(todos)), [
     todos
   ]);
-  useEffect(
-    () => window.localStorage.setItem('completedTaskCount', completedTaskCount),
-    [completedTaskCount]
-  );
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -55,17 +48,11 @@ const Todos = () => {
      * need to check if the deleted item task is completed if yes then minus from
      * the compledted task state
      */
-    const deletedTask = todosCopy.splice(index, 1);
+    todosCopy.splice(index, 1);
     setTodo(todosCopy);
-    updateCompletedTaskCountHandler(
-      deletedTask.copyWithin ? completedTaskCount - 1 : completedTaskCount
-    );
   };
 
-  const updateCompletedTaskCountHandler = val => {
-    setCompletedTaskCount(val);
-  };
-
+  
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -78,15 +65,13 @@ const Todos = () => {
             <Todo
               todo={todo}
               index={index}
-              completedTaskCount={completedTaskCount}
               updateTodoHandler={updateTodoHandler}
               deleteTodoHandler={deleteTodoHandler}
-              updateCompletedTaskCountHandler={updateCompletedTaskCountHandler}
             />
           </li>
         ))}
       </ul>
-      completed:{completedTaskCount}
+      completed:{todos.filter(todo => todo.completed).length}
     </div>
   );
 };
