@@ -6,16 +6,17 @@ const Todos = () => {
   const [todos, setTodo] = useState(
     JSON.parse(window.localStorage.getItem('todos')) || []
   );
-  const [completedTask, setCompletedTask] = useState(
-    window.localStorage.getItem('task-count') || 0
+  const [completedTaskCount, setCompletedTaskCount] = useState(
+    Number(window.localStorage.getItem('completedTaskCount')) || 0
   );
 
   useEffect(() => window.localStorage.setItem('todos', JSON.stringify(todos)), [
     todos
   ]);
-  useEffect(() => window.localStorage.setItem('task-count', completedTask), [
-    completedTask
-  ]);
+  useEffect(
+    () => window.localStorage.setItem('completedTaskCount', completedTaskCount),
+    [completedTaskCount]
+  );
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -56,13 +57,13 @@ const Todos = () => {
      */
     const deletedTask = todosCopy.splice(index, 1);
     setTodo(todosCopy);
-    updateCompletedTaskHandler(
-      deletedTask.copyWithin ? completedTask - 1 : completedTask
+    updateCompletedTaskCountHandler(
+      deletedTask.copyWithin ? completedTaskCount - 1 : completedTaskCount
     );
   };
 
-  const updateCompletedTaskHandler = val => {
-    setCompletedTask(val);
+  const updateCompletedTaskCountHandler = val => {
+    setCompletedTaskCount(val);
   };
 
   return (
@@ -77,15 +78,15 @@ const Todos = () => {
             <Todo
               todo={todo}
               index={index}
-              completedTask={completedTask}
+              completedTaskCount={completedTaskCount}
               updateTodoHandler={updateTodoHandler}
               deleteTodoHandler={deleteTodoHandler}
-              updateCompletedTaskHandler={updateCompletedTaskHandler}
+              updateCompletedTaskCountHandler={updateCompletedTaskCountHandler}
             />
           </li>
         ))}
       </ul>
-      completed:{completedTask}
+      completed:{completedTaskCount}
     </div>
   );
 };

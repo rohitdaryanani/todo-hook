@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 const Todo = ({
   index,
   todo,
-  completedTask,
-  updateCompletedTaskHandler,
+  completedTaskCount,
+  updateCompletedTaskCountHandler,
   updateTodoHandler,
   deleteTodoHandler
 }) => {
@@ -13,9 +13,9 @@ const Todo = ({
     setIsEditable(!isEditable);
   };
 
-  const save = e => {
-    e.preventDefault();
-    const { target } = e;
+  const save = event => {
+    event.preventDefault();
+    const { target } = event;
     const { todoInput } = target;
     const { value } = todoInput;
 
@@ -27,13 +27,15 @@ const Todo = ({
     deleteTodoHandler(index);
   };
 
-  const toggleCompleted = e => {
-    const { target } = e;
+  const toggleCompleted = event => {
+    const { target } = event;
     const { checked } = target;
-    const completedValue = checked ? completedTask + 1 : completedTask - 1;
+    const completedValue = checked
+      ? completedTaskCount + 1
+      : completedTaskCount - 1;
 
     updateTodoHandler(index, { ...todo, completed: checked });
-    updateCompletedTaskHandler(completedValue);
+    updateCompletedTaskCountHandler(completedValue);
   };
 
   const { name } = todo;
