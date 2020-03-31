@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { uuid } from 'uuidv4';
 import Todo from './Todo';
 
 const Todos = () => {
-  const [todos, setTodo] = useState([]);
-  const [completedTask, setCompletedTask] = useState(0);
+  const [todos, setTodo] = useState(
+    JSON.parse(window.localStorage.getItem('todos')) || []
+  );
+  const [completedTask, setCompletedTask] = useState(
+    window.localStorage.getItem('task-count') || 0
+  );
+
+  useEffect(() => window.localStorage.setItem('todos', JSON.stringify(todos)), [
+    todos
+  ]);
+  useEffect(() => window.localStorage.setItem('task-count', completedTask), [
+    completedTask
+  ]);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -34,12 +45,20 @@ const Todos = () => {
      */
     todosCopy.splice(index, 1, newTodo);
     setTodo(todosCopy);
+    localStorage.setItem('todos', JSON.stringify(todos));
   };
 
   const deleteTodoHandler = index => {
     const todosCopy = [...todos];
-    todosCopy.splice(index, 1);
+    /**
+     * need to check if the deleted item task is completed if yes then minus from
+     * the compledted task state
+     */
+    const deletedTask = todosCopy.splice(index, 1);
     setTodo(todosCopy);
+    updateCompletedTaskHandler(
+      deletedTask.copyWithin ? completedTask - 1 : completedTask
+    );
   };
 
   const updateCompletedTaskHandler = val => {
