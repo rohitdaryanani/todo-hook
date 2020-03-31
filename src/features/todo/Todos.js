@@ -4,6 +4,7 @@ import Todo from './Todo';
 
 const Todos = () => {
   const [todos, setTodo] = useState([]);
+  const [completedTask, setCompletedTask] = useState(0);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -41,6 +42,10 @@ const Todos = () => {
     setTodo(todosCopy);
   };
 
+  const updateCompletedTaskHandler = val => {
+    setCompletedTask(val);
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -53,12 +58,15 @@ const Todos = () => {
             <Todo
               todo={todo}
               index={index}
+              completedTask={completedTask}
               updateTodoHandler={updateTodoHandler}
               deleteTodoHandler={deleteTodoHandler}
+              updateCompletedTaskHandler={updateCompletedTaskHandler}
             />
           </li>
         ))}
       </ul>
+      completed:{completedTask}
     </div>
   );
 };

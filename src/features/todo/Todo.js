@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 
-const Todo = ({ index, todo, updateTodoHandler, deleteTodoHandler }) => {
+const Todo = ({
+  index,
+  todo,
+  completedTask,
+  updateCompletedTaskHandler,
+  updateTodoHandler,
+  deleteTodoHandler
+}) => {
   const [isEditable, setIsEditable] = useState(false);
   const toggleMode = () => {
     setIsEditable(!isEditable);
@@ -20,6 +27,15 @@ const Todo = ({ index, todo, updateTodoHandler, deleteTodoHandler }) => {
     deleteTodoHandler(index);
   };
 
+  const toggleCompleted = e => {
+    const { target } = e;
+    const { checked } = target;
+    const completedValue = checked ? completedTask + 1 : completedTask - 1;
+
+    updateTodoHandler(index, { ...todo, completed: checked });
+    updateCompletedTaskHandler(completedValue);
+  };
+
   const { name } = todo;
 
   if (isEditable) {
@@ -35,6 +51,12 @@ const Todo = ({ index, todo, updateTodoHandler, deleteTodoHandler }) => {
 
   return (
     <>
+      <input
+        type="checkbox"
+        name="todoCheck"
+        defaultChecked={todo.completed}
+        onClick={toggleCompleted}
+      />
       <span>{todo.name}</span>
       <button onClick={toggleMode}>edit</button>
       <button onClick={remove}>delete</button>
